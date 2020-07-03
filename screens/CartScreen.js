@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {apiUrl} from '../urlconfig';
-import {Card, Checkbox, Modal, Provider, Stepper, WingBlank} from '@ant-design/react-native';
+import {Card, Modal, Provider, WingBlank} from '@ant-design/react-native';
 import CheckBox1 from 'react-native-check-box';
-import { withNavigationFocus} from "react-navigation"
+
 import {placeOrder} from '../service/cartService';
-import {postRequest} from '../service/ajax';
-import {addToCartByButtom,removeByItemId} from '../service/cartService'
-const CheckboxItem = Checkbox.CheckboxItem;
+
+import {addToCartByButtom, removeByItemId} from '../service/cartService';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -70,8 +70,8 @@ export class CartScreen extends React.Component {
         this.state = {
             books: [],
             isLoading: true,
-            select:[],
-            price:0,
+            select: [],
+            price: 0,
 
         };
         this.onClose = () => {
@@ -85,12 +85,12 @@ export class CartScreen extends React.Component {
             visible: false,
 
         };
-        this._navListener=null;
+        this._navListener = null;
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this._navListener = this.props.navigation.addListener('focus', () => {
-            console.log("cart");
+            console.log('cart');
 
             const _retrieveData = async () => {
                 try {
@@ -103,44 +103,46 @@ export class CartScreen extends React.Component {
                     // }
                 } catch (error) {
                     // Error retrieving data
-                    console.log("error")
+                    console.log('error');
                 }
             };
             _retrieveData();
         });
 
     }
+
     componentWillUnmount() {
         this._navListener.remove();
     }
 
-    handlePlaceOrder=()=>{
-        console.log("placeOrder");
-      let s=[];
-      this.state.books.forEach((t)=>{
-          if(t.selected){
-              s.push(t.key)
-          }
-      });
-      if(s.length==0)
-      {
-          alert("未选中商品");
-          return;
-      }
+    handlePlaceOrder = () => {
+        console.log('placeOrder');
+        let s = [];
+        this.state.books.forEach((t) => {
+            if (t.selected) {
+                s.push(t.key);
+            }
+        });
+        if (s.length == 0) {
+            alert('未选中商品');
+            return;
+        }
         placeOrder(s);
+        this.props.navigation.navigate('Order');
     };
-    getPrice=()=>{
-        let p=0;
-      this.state.books.forEach((item)=>{
-          if(item.selected)
-          {
-              p+=item.number*item.price
-          }
-      });
+
+    getPrice = () => {
+        let p = 0;
+        this.state.books.forEach((item) => {
+            if (item.selected) {
+                p += item.number * item.price;
+            }
+        });
         this.setState({
-            price:p
-        })
+            price: p,
+        });
     };
+
     fetchData() {
         console.log(GET_CART_ITEMS_URL);
         fetch(GET_CART_ITEMS_URL, {
@@ -170,8 +172,8 @@ export class CartScreen extends React.Component {
 
     renderBook = ({item}) => {
         console.log(item.number);
-        const callBack=()=>{
-            this.fetchData()
+        const callBack = () => {
+            this.fetchData();
         };
 
         return (
@@ -181,7 +183,7 @@ export class CartScreen extends React.Component {
                 this.navigateToDetail({item});
             }} underlayColor='#ededed'>
 
-                <View style={{paddingTop:5,paddingBottom: 15, width: 400}}>
+                <View style={{paddingTop: 5, paddingBottom: 15, width: 400}}>
                     <WingBlank size="md">
 
                         <Card>
@@ -191,26 +193,26 @@ export class CartScreen extends React.Component {
                                 extra={item.book}
                                 title={
                                     <CheckBox1
-                                    style={{flex: 1, padding: 3}}
-                                    onClick={() => {
-                                        let newItem=item;
-                                        newItem.selected=!newItem.selected;
-                                        let newData=this.state.books;
-                                        newData.forEach((t)=>{
-                                            if(t.key==newData.key){
-                                                t=newData;
-                                            }
-                                        });
+                                        style={{flex: 1, padding: 3}}
+                                        onClick={() => {
+                                            let newItem = item;
+                                            newItem.selected = !newItem.selected;
+                                            let newData = this.state.books;
+                                            newData.forEach((t) => {
+                                                if (t.key == newData.key) {
+                                                    t = newData;
+                                                }
+                                            });
 
 
-                                        this.setState({
-                                           books:newData
-                                        });
-                                        this.getPrice();
-                                    }}
-                                    isChecked={item.selected}
+                                            this.setState({
+                                                books: newData,
+                                            });
+                                            this.getPrice();
+                                        }}
+                                        isChecked={item.selected}
 
-                                />
+                                    />
 
 
                                 }
@@ -226,16 +228,35 @@ export class CartScreen extends React.Component {
                                         {/*<Text style={{ marginLeft: 14 }}>书名: {item.book}</Text>*/}
                                         <Text style={{marginLeft: 22, fontSize: 16, margin: 3}}>作者: {item.author}</Text>
 
-                                        <Text style={{marginLeft: 22, fontSize: 16, margin: 3}}>ISBN:  {item.isbn}</Text>
+                                        <Text style={{marginLeft: 22, fontSize: 16, margin: 3}}>ISBN: {item.isbn}</Text>
                                         <Text
-                                            style={{marginLeft: 22, fontSize: 16, margin:  3}}>价格: {parseFloat(item.price).toFixed(2)} ￥</Text>
+                                            style={{
+                                                marginLeft: 22,
+                                                fontSize: 16,
+                                                margin: 3,
+                                            }}>价格: {parseFloat(item.price).toFixed(2)} ￥</Text>
 
 
-                                        <View style={{flex: 2, flexDirection: 'row',marginLeft: 22, margin: 3,marginBottom:6,width:100, height:10}}>
-                                            <Button title={'—'} color="#f1939b" onPress={() => this.setState( removeByItemId(item.key,callBack ))}  />
+                                        <View style={{
+                                            flex: 2,
+                                            flexDirection: 'row',
+                                            marginLeft: 22,
+                                            margin: 3,
+                                            marginBottom: 6,
+                                            width: 100,
+                                            height: 10,
+                                        }}>
+                                            <Button title={'—'} color="#f1939b"
+                                                    onPress={() => this.setState(removeByItemId(item.key, callBack))}/>
                                             <Text
-                                                style={{marginLeft:4, fontSize: 16, margin:  4,marginTop:6 }}>数量: {item.number} </Text>
-                                            <Button title={'+'} color="#f1939b"  onPress={() => this.setState(  addToCartByButtom(item.key,callBack  ))}  />
+                                                style={{
+                                                    marginLeft: 4,
+                                                    fontSize: 16,
+                                                    margin: 4,
+                                                    marginTop: 6,
+                                                }}>数量: {item.number} </Text>
+                                            <Button title={'+'} color="#f1939b"
+                                                    onPress={() => this.setState(addToCartByButtom(item.key, callBack))}/>
                                         </View>
 
                                     </View>
@@ -268,41 +289,46 @@ export class CartScreen extends React.Component {
             );
         }
         const footerButtons = [
-            { text: '取消', onPress: () => console.log('cancel') },
-            { text: '支付', onPress: this.handlePlaceOrder},
+            {text: '取消', onPress: () => console.log('cancel')},
+            {text: '支付', onPress: this.handlePlaceOrder},
         ];
         return (
-            <SafeAreaView style={{flex: 2}}>
-                {/*<Tag style={{paddingTop:20,paddingLeft: 20,paddingBottom:5}}>总价：{this.state.price}元</Tag>*/}
+            <SafeAreaView style={{flex: 0}}>
+                <View style={{paddingLeft: 20, paddingTop: 20, paddingRight: 20,paddingBottom: 15}}>
 
-                {/*<BasicModalExample price={this.state.price} placeOrder={this.handlePlaceOrder}/>*/}
-                <Provider>
-                <View style={{paddingLeft:20,paddingTop:20,paddingRight:20}}>
-
-                    <Button title={'结算'}   color="#f1939b" style={{width:90,height:30}} onPress={() => this.setState({ visible: true })}>
-                        结算
-                    </Button>
-
-
-                    <Modal
-                        title="支付"
-                        transparent
-                        onClose={this.onClose}
-                        maskClosable
-                        visible={this.state.visible}
-                        closable
-                        footer={footerButtons}
-                    >
-                        <View style={{ paddingVertical: 20 }}>
-                            <Text style={{ textAlign: 'center' }}>确认支付：{parseFloat(this.state.price).toFixed(2)}元</Text>
-
-
-                        </View>
-
-                    </Modal>
-
+                <Button title={'结算'} color="#f1939b" style={{width: 90, height: 30}}
+                        onPress={() => {if(this.state.price>0)this.setState({visible: true})}}>
+                    结算
+                </Button>
                 </View>
+                <Provider>
+                    <View style={{paddingLeft: 20, paddingTop: 20, paddingRight: 20}}>
+
+
+
+
+                        <Modal
+                            title="支付"
+                            transparent
+                            onClose={this.onClose}
+                            maskClosable
+                            visible={this.state.visible}
+                            closable
+                            footer={footerButtons}
+                        >
+                            <View style={{paddingVertical: 20}}>
+                                <Text
+                                    style={{textAlign: 'center'}}>确认支付：{parseFloat(this.state.price).toFixed(2)}元</Text>
+
+
+                            </View>
+
+                        </Modal>
+
+                    </View>
                 </Provider>
+
+
                 <FlatList
                     data={this.state.books}
                     renderItem={this.renderBook}
@@ -312,6 +338,7 @@ export class CartScreen extends React.Component {
 
                 />
             </SafeAreaView>
+
         );
     }
 }

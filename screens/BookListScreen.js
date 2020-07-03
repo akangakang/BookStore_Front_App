@@ -37,17 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ededed',
     },
 });
-const shadowOpt = {
-    width:100,
-    height:100,
-    color:"#000",
-    border:10,
-    radius:50,
-    opacity:0.2,
-    x:0,
-    y:8,
-    style:{marginVertical:5}
-};
+
 const GETBOOKS_URL=apiUrl+"/getBooks";
 export class BookListScreen extends React.Component{
     constructor(props) {

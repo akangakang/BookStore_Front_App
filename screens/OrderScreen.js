@@ -7,16 +7,12 @@ import {
     FlatList,
     Image,
     StyleSheet,
-
-    TouchableHighlight, Button,
+    TouchableHighlight,
 } from 'react-native';
-import {MySearchBar} from '../components/SearchBar';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {apiUrl} from '../urlconfig';
-import {Card, Stepper, Checkbox, Tag, Provider, WingBlank, Modal} from '@ant-design/react-native';
-import CheckBox1 from 'react-native-check-box';
+import {Card, WingBlank} from '@ant-design/react-native';
 
-import {placeOrder} from '../service/cartService';
 
 const styles = StyleSheet.create({
     container: {
@@ -58,7 +54,7 @@ const shadowOpt = {
     radius: 50,
     opacity: 0.2,
     x: 0,
-    y: 8,
+    y: 8 ,
     style: {marginVertical: 5},
 };
 let GET_ORDERS_URL = '';
@@ -121,7 +117,6 @@ export class OrderScreen extends React.Component {
 
     }
 
-
     renderOrderItems = ({item}) => {
         return (
             <View style={{flexDirection: 'row', height: 110, backgroundColor: '#FFFFFF'}}>
@@ -146,19 +141,14 @@ export class OrderScreen extends React.Component {
     renderOrders = ({item}) => {
         return (
 
-            <TouchableHighlight onPress={() => {
-                this.navigateToDetail({item});
-            }} underlayColor='#ededed'>
+
 
                 <View style={{paddingTop: 5, paddingBottom: 15, width: 400}}>
                     <WingBlank size="md">
 
                         <Card>
                             <Card.Header
-
-
-                                extra={new Date(item.date).toLocaleDateString().replace(/\//g, '-') + ' ' + new Date(item.date).toTimeString().substr(0, 8)}
-
+                                extra={new Date(item.date).toLocaleDateString().replace(/\//g, '-') }
                             />
 
 
@@ -181,7 +171,6 @@ export class OrderScreen extends React.Component {
                     </WingBlank>
                 </View>
 
-            </TouchableHighlight>
 
         );
     };
@@ -198,10 +187,6 @@ export class OrderScreen extends React.Component {
         return (
             <SafeAreaView style={{flex: 2}}>
                 <Text>{"\n "}</Text>
-                {/*<Tag style={{paddingTop:20,paddingLeft: 20,paddingBottom:5}}>总价：{this.state.price}元</Tag>*/}
-
-                {/*<BasicModalExample price={this.state.price} placeOrder={this.handlePlaceOrder}/>*/}
-
                 <FlatList
                     data={this.state.orders}
                     renderItem={this.renderOrders}

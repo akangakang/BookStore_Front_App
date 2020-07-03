@@ -86,7 +86,7 @@ function MyOrderScreen({navigation}) {
     return (
         <SafeAreaProvider>
             <Stack.Navigator>
-                <Stack.Screen name="Cart" component={OrderScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="Order" component={OrderScreen} options={{headerShown:false}}/>
 
             </Stack.Navigator>
         </SafeAreaProvider>
@@ -115,15 +115,9 @@ function MyProfileScreen({navigation}) {
 //     },
 // });
 const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
+
 export function HomeScreen(){
     return (
-            // <Drawer.Navigator initialRouteName="Home">
-            //     <Drawer.Screen name="Books" component={BookListAndDetail} />
-            //     <Drawer.Screen name="MyCart" component={MyCartScreen} />
-            //     <Drawer.Screen name="MyOrder" component={MyOrderScreen} />
-            //     <Drawer.Screen name="MyProfile" component={MyProfileScreen} />
-            // </Drawer.Navigator>
 
             <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -138,7 +132,7 @@ export function HomeScreen(){
                                     color={color}
                                 />
                             );
-                        } else if (route.name === 'Store') {
+                        } else if (route.name === 'Order') {
                             return (
                                 <Ionicons
                                     name={'md-book'}
@@ -172,7 +166,7 @@ export function HomeScreen(){
                     inactiveTintColor: 'gray',
                 }}>
                 <Tab.Screen name="Home" component={BookListAndDetail} />
-                <Tab.Screen name="Store" component={MyOrderScreen}
+                <Tab.Screen name="Order"  component={MyOrderScreen}
                             listeners={({ navigation, route }) => ({
                                 tabPress: e => {
                                     // Prevent default action
