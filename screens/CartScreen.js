@@ -268,8 +268,7 @@ export class CartScreen extends React.Component {
                             </Card.Body>
 
                         </Card>
-
-
+                        
                     </WingBlank>
                 </View>
 

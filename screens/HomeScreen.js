@@ -100,20 +100,7 @@ function MyProfileScreen({navigation}) {
         </View>
     );
 }
-// const myApp= TabNavigator({
-//     Home: {
-//         screen: MyHomeScreen,
-//     },
-//     Notifications: {
-//         screen: MyNotificationsScreen,
-//     },
-// }, {
-//     tabBarPosition: 'top',
-//     animationEnabled: true,
-//     tabBarOptions: {
-//         activeTintColor: '#e91e63',
-//     },
-// });
+
 const Tab = createBottomTabNavigator();
 
 export function HomeScreen(){

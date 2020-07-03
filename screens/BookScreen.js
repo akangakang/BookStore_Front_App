@@ -2,19 +2,17 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground,Button} from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import {addToCart} from '../service/cartService';
-import {SyncStorage} from 'react-native';
+
 export class BookScreen extends React.Component {
 
     handleAddToCart=()=>{
-        // console.log(this.props.route.params.detail.key);
-        // alert(this.props.route.params.detail.key);
         addToCart(this.props.route.params.detail.key);
     };
     render() {
-        // console.log(this.props.route.params.detail);
+
         let detail = this.props.route.params.detail;
         return (
-            // { flex: 1, alignItems: 'center', justifyContent: 'center' }
+
             <View>
                 <ImageBackground source={{uri: detail.cover}}
                                  style={{width: 1000, height: 280}}>
@@ -61,13 +59,11 @@ export class BookScreen extends React.Component {
 
                 <View style={styles.bottom}>
 
-
                         <Text style={styles.description}>类型：{detail.type}</Text>
                         <Text style={styles.description}>单价：¥{detail.price}</Text>
                         <Text style={styles.description}>库存：{detail.stock}</Text>
                         <Text style={styles.description}>ISBD：{detail.isbn}</Text>
                         <Text style={styles.description}>简介：{detail.description}</Text>
-                        {/*<Text> {"\n"} </Text>*/}
 
                 </View>
             </View>

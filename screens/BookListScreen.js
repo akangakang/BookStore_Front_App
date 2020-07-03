@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {apiUrl} from '../urlconfig';
 import { Card, WhiteSpace, WingBlank } from '@ant-design/react-native';
 import MyCarousel from '../components/MyCarousel';
+import {getBooks} from '../service/bookService';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -63,30 +64,19 @@ export class BookListScreen extends React.Component{
             } catch (error) {
                 // Error retrieving data
             }
-        }
+        };
         _retrieveData();
     }
     fetchData() {
-        fetch(GETBOOKS_URL, {
-            method: 'GET',
-
-            headers: {
-                'Content-Type': 'application/json',
-            },
-
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                // 注意，这里使用了this关键字，为了保证this在调用时仍然指向当前组件，我们需要对其进行“绑定”操作
-                this.setState({
-                    isLoading:false,
-                    books: responseData,
-                    showBooks:responseData
-                });
-            })
-            .catch((error)=> {
-                console.error(error);
+        const callback=(responseData)=>{
+            this.setState({
+                isLoading:false,
+                books: responseData,
+                showBooks:responseData
             });
+        };
+        getBooks(callback);
+
     }
     getText(data) {
         var arr=[];
@@ -128,10 +118,7 @@ export class BookListScreen extends React.Component{
                                 </View>
 
                             </Card.Body>
-                            {/*<Card.Footer*/}
-                            {/*    content="footer content"*/}
-                            {/*    extra="footer extra content"*/}
-                            {/*/>*/}
+
                         </Card>
 
 
@@ -141,7 +128,7 @@ export class BookListScreen extends React.Component{
             </TouchableHighlight>
 
         );
-    }
+    };
     cancel(){
         this.setState({
             showBooks:this.state.books
